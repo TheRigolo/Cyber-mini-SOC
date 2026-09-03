@@ -6,7 +6,7 @@
 Cause : disque virtuel alloué trop petit au départ (20 Go au lieu de 50 Go recommandés).
 
 **Résolution** :
-1. Redimensionnement du disque virtuel via [VirtualBox/VMware]
+1. Redimensionnement du disque virtuel via VirtualBox
 2. Extension de la partition avec `lvextend` + `resize2fs`
 3. Relance de l'installation
 
