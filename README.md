@@ -26,3 +26,26 @@ L'ensemble du laboratoire est hébergé sur un hyperviseur (VirtualBox) et utili
 |   |  (attaque)    |                                             |
 |   └───────────────┘                                             |
 |_________________________________________________________________|
+
+```
+### Adressage IP
+
+| Machine | Rôle | IP |
+|---|---|---|
+| wazuh-manager | Manager + Indexer + Dashboard + Suricata | 192.168.56.10/24 |
+| target-linux | Agent Wazuh | 192.168.56.x/24 |
+| target-windows | Agent Wazuh | 192.168.56.x/24 |
+| attacker-kali | Machine d'attaque | 192.168.56.x/24 |
+
+
+
+## Stack utilisée
+
+| Composant | Version |
+|---|---|
+| Hyperviseur | VirtualBox |
+| SIEM | Wazuh 4.14 (Manager + Indexer + Dashboard) |
+| OS cible Linux | Ubuntu Server 22.04.5 LTS |
+| OS cible Windows | Windows 11 |
+| Attaque | Kali Linux |
+| Réseau | Host-Only, 192.168.56.0/24 |
