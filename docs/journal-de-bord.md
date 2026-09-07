@@ -71,6 +71,8 @@ instantanée, contrairement au scan périodique par défaut (toutes les
 12h). C'est un point important si on veut détecter une modification de fichier 
 critique rapidement (ex: /etc/passwd modifié par un attaquant).
 
+![Syscheck](Screenshots/Syscheck.png)
+
 ---
 
 ##  Vérification du module Vulnerability Detection
@@ -92,6 +94,9 @@ upgrade` non exécuté), ce qui illustre bien l'intérêt de ce module :
 sans lui, ces failles resteraient invisibles jusqu'à un audit ou un 
 incident. Un vrai environnement de production appliquerait un cycle de 
 patch management régulier pour maintenir ce chiffre bas.
+
+![dashboard_CVE_detection](Screenshots/Dashboard_CVE_detection.png)
+
 
 
 ## Vérification du module Log Collection
@@ -115,6 +120,9 @@ mot de passe volontairement incorrect, répétée plusieurs fois.
 brut, il applique une couche de corrélation (plusieurs échecs → alerte de 
 niveau plus élevé), ce qui est le principe même d'un SIEM par rapport à 
 un simple collecteur de logs.
+
+
+![Alerte_ssh_connexion](Screenshots/Alerte_ssh_connexion.png)
 
 
 
