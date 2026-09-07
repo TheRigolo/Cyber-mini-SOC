@@ -39,3 +39,87 @@ moment de l'installation, sans que ça se voie une fois l'échec passé.
 
 
 **Résultat** : dashboard accessible, aucun agent connecté à ce stade (attendu).
+
+
+
+## Problème configuration VM Windows 11
+
+* **Contournement du compte Microsoft sur Windows 11 :** 
+  * *Problème :* L'installateur de Windows 11 bloquait la configuration en exigeant obligatoirement une connexion Internet et un compte Microsoft en ligne.
+  * *Résolution :* Déconnexion temporaire de la carte réseau virtuelle dans VirtualBox, utilisation de la commande `oobe\bypassnro` via le raccourci `Maj + F10`, puis sélection de l'option "Je n'ai pas Internet" pour forcer la création d'un compte local.
+
+* **Navigation sur la nouvelle interface du Dashboard Wazuh (v4.14.7) :**
+  * *Problème :* Les menus de configuration centralisée (pour la collecte de logs personnalisés) différaient des documentations standards, rendant l'édition du fichier `agent.conf` moins intuitive.
+  * *Résolution :* Utilisation de l'onglet **Files** à l'intérieur du groupe `default` pour éditer et injecter directement les blocs de configuration XML pour Linux (`/var/log/auth.log`) et Windows (`Security`).
+
+
+
+##  Vérification du module FIM (File Integrity Monitoring)
+
+**Config appliquée** : ajout d'un dossier de test `/etc/fim-test` en 
+surveillance temps réel (`realtime="yes"`) dans `ossec.conf`.
+
+**Test réalisé** : création, modification, puis suppression d'un fichier 
+dans ce dossier.
+
+**Résultat** : les trois événements (added/modified/deleted) sont apparus 
+dans le module "Integrity monitoring" du Dashboard, avec le chemin exact 
+et l'horodatage.
+
+**Ce que j'en retiens** : le mode realtime permet une détection quasi 
+instantanée, contrairement au scan périodique par défaut (toutes les 
+12h). C'est un point important si on veut détecter une modification de fichier 
+critique rapidement (ex: /etc/passwd modifié par un attaquant).
+
+---
+
+##  Vérification du module Vulnerability Detection
+
+**Config vérifiée** : module activé côté manager (`<enabled>yes</enabled>`).
+
+**Résultat** : après synchronisation de la base CVE, [X] vulnérabilités 
+détectées sur `linux-agent-01`, de sévérité [niveau constaté].
+
+**Ce que j'en retiens** : ce module compare en continu les paquets 
+installés à une base CVE à jour, ce qui permet une détection proactive 
+des failles connues sans attendre un scan de pentest manuel.
+
+
+
+## Vérification du module Log Collection
+
+**Config vérifiée** : l'agent `linux-agent-01` collecte par défaut 
+`/var/log/auth.log`, `/var/log/dpkg.log` et le log active-response.
+
+**Test réalisé** : tentative de connexion SSH vers target-linux avec un 
+mot de passe volontairement incorrect, répétée plusieurs fois.
+
+**Résultat** : plusieurs alertes générées et visibles dans le Dashboard 
+(Security events) :
+- `sshd: authentication failed` (rule 5760, niveau 5)
+- `sshd: connection reset` (rule 5762, niveau 4)
+- `PAM: User login failed` (rule 5503, niveau 5)
+- `syslog: User missed the password more than one time` (rule 2502, 
+  niveau 10) — règle de corrélation qui se déclenche après plusieurs 
+  échecs rapprochés, proche d'une détection de brute force
+
+**Ce que j'en retiens** : Wazuh ne se contente pas de logger l'événement 
+brut, il applique une couche de corrélation (plusieurs échecs → alerte de 
+niveau plus élevé), ce qui est le principe même d'un SIEM par rapport à 
+un simple collecteur de logs.
+
+
+
+**Résultat** : après synchronisation de la base CVE, un total de 4 953 
+vulnérabilités évaluées a été détecté sur `linux-agent-01` (465 
+Critical, 2 153 High, 2 297 Medium, 128 Low), plus 710 en attente 
+d'évaluation. Les CVE les plus fréquentes concernent le noyau 
+(`linux-image-6.8.0-40-generic`) et Firefox. Le système d'exploitation 
+détecté est Ubuntu 22.04 LTS (Jammy Jellyfish).
+
+**Ce que j'en retiens** : ce volume élevé de vulnérabilités s'explique 
+par une image Ubuntu fraîchement installée, jamais mise à jour (`apt 
+upgrade` non exécuté) — ce qui illustre bien l'intérêt de ce module : 
+sans lui, ces failles resteraient invisibles jusqu'à un audit ou un 
+incident. Un vrai environnement de production appliquerait un cycle de 
+patch management régulier pour maintenir ce chiffre bas.
