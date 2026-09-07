@@ -77,13 +77,21 @@ critique rapidement (ex: /etc/passwd modifié par un attaquant).
 
 **Config vérifiée** : module activé côté manager (`<enabled>yes</enabled>`).
 
-**Résultat** : après synchronisation de la base CVE, [X] vulnérabilités 
-détectées sur `linux-agent-01`, de sévérité [niveau constaté].
 
-**Ce que j'en retiens** : ce module compare en continu les paquets 
-installés à une base CVE à jour, ce qui permet une détection proactive 
-des failles connues sans attendre un scan de pentest manuel.
 
+**Résultat** : après synchronisation de la base CVE, un total de 4 953 
+vulnérabilités évaluées a été détecté sur `linux-agent-01` (465 
+Critical, 2 153 High, 2 297 Medium, 128 Low), plus 710 en attente 
+d'évaluation. Les CVE les plus fréquentes concernent le noyau 
+(`linux-image-6.8.0-40-generic`) et Firefox. Le système d'exploitation 
+détecté est Ubuntu 22.04 LTS (Jammy Jellyfish).
+
+**Ce que j'en retiens** : ce volume élevé de vulnérabilités s'explique 
+par une image Ubuntu fraîchement installée, jamais mise à jour (`apt 
+upgrade` non exécuté), ce qui illustre bien l'intérêt de ce module : 
+sans lui, ces failles resteraient invisibles jusqu'à un audit ou un 
+incident. Un vrai environnement de production appliquerait un cycle de 
+patch management régulier pour maintenir ce chiffre bas.
 
 
 ## Vérification du module Log Collection
@@ -110,16 +118,4 @@ un simple collecteur de logs.
 
 
 
-**Résultat** : après synchronisation de la base CVE, un total de 4 953 
-vulnérabilités évaluées a été détecté sur `linux-agent-01` (465 
-Critical, 2 153 High, 2 297 Medium, 128 Low), plus 710 en attente 
-d'évaluation. Les CVE les plus fréquentes concernent le noyau 
-(`linux-image-6.8.0-40-generic`) et Firefox. Le système d'exploitation 
-détecté est Ubuntu 22.04 LTS (Jammy Jellyfish).
 
-**Ce que j'en retiens** : ce volume élevé de vulnérabilités s'explique 
-par une image Ubuntu fraîchement installée, jamais mise à jour (`apt 
-upgrade` non exécuté) — ce qui illustre bien l'intérêt de ce module : 
-sans lui, ces failles resteraient invisibles jusqu'à un audit ou un 
-incident. Un vrai environnement de production appliquerait un cycle de 
-patch management régulier pour maintenir ce chiffre bas.
