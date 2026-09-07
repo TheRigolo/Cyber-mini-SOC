@@ -58,8 +58,8 @@ plusieurs serveurs pour la charge et la résilience.
 | Machine | Rôle | IP |
 |---|---|---|
 | wazuh-manager | Manager + Indexer + Dashboard + Suricata | 192.168.56.10/24 |
-| target-linux | Agent Wazuh | 192.168.56.x/24 |
-| target-windows | Agent Wazuh | 192.168.56.x/24 |
+| target-linux | Agent Wazuh | 192.168.56.20/24 |
+| target-windows | Agent Wazuh | 192.168.56.30/24 |
 | attacker-kali | Machine d'attaque | 192.168.56.x/24 |
 
 
