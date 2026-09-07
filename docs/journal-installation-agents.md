@@ -53,6 +53,32 @@ moment de l'installation, sans que ça se voie une fois l'échec passé.
   * *Résolution :* Utilisation de l'onglet **Files** à l'intérieur du groupe `default` pour éditer et injecter directement les blocs de configuration XML pour Linux (`/var/log/auth.log`) et Windows (`Security`).
 
 
+## Vérification du module Log Collection
+
+**Config vérifiée** : l'agent `linux-agent-01` collecte par défaut 
+`/var/log/auth.log`, `/var/log/dpkg.log` et le log active-response.
+
+**Test réalisé** : tentative de connexion SSH vers target-linux avec un 
+mot de passe volontairement incorrect, répétée plusieurs fois.
+
+**Résultat** : plusieurs alertes générées et visibles dans le Dashboard 
+(Security events) :
+- `sshd: authentication failed` (rule 5760, niveau 5)
+- `sshd: connection reset` (rule 5762, niveau 4)
+- `PAM: User login failed` (rule 5503, niveau 5)
+- `syslog: User missed the password more than one time` (rule 2502, 
+  niveau 10) — règle de corrélation qui se déclenche après plusieurs 
+  échecs rapprochés, proche d'une détection de brute force
+
+**Ce que j'en retiens** : Wazuh ne se contente pas de logger l'événement 
+brut, il applique une couche de corrélation (plusieurs échecs → alerte de 
+niveau plus élevé), ce qui est le principe même d'un SIEM par rapport à 
+un simple collecteur de logs.
+
+
+![Alerte_ssh_connexion](Screenshots/Alerte_ssh_connexion.png)
+
+
 
 ##  Vérification du module FIM (File Integrity Monitoring)
 
@@ -99,30 +125,6 @@ patch management régulier pour maintenir ce chiffre bas.
 
 
 
-## Vérification du module Log Collection
-
-**Config vérifiée** : l'agent `linux-agent-01` collecte par défaut 
-`/var/log/auth.log`, `/var/log/dpkg.log` et le log active-response.
-
-**Test réalisé** : tentative de connexion SSH vers target-linux avec un 
-mot de passe volontairement incorrect, répétée plusieurs fois.
-
-**Résultat** : plusieurs alertes générées et visibles dans le Dashboard 
-(Security events) :
-- `sshd: authentication failed` (rule 5760, niveau 5)
-- `sshd: connection reset` (rule 5762, niveau 4)
-- `PAM: User login failed` (rule 5503, niveau 5)
-- `syslog: User missed the password more than one time` (rule 2502, 
-  niveau 10) — règle de corrélation qui se déclenche après plusieurs 
-  échecs rapprochés, proche d'une détection de brute force
-
-**Ce que j'en retiens** : Wazuh ne se contente pas de logger l'événement 
-brut, il applique une couche de corrélation (plusieurs échecs → alerte de 
-niveau plus élevé), ce qui est le principe même d'un SIEM par rapport à 
-un simple collecteur de logs.
-
-
-![Alerte_ssh_connexion](Screenshots/Alerte_ssh_connexion.png)
 
 
 
