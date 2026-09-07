@@ -28,6 +28,31 @@ L'ensemble du laboratoire est hébergé sur un hyperviseur (VirtualBox) et utili
 |_________________________________________________________________|
 
 ```
+
+## Composants de l'architecture Wazuh
+
+- **Wazuh Indexer** : stocke et indexe toutes les données collectées 
+  (logs, alertes). Basé sur OpenSearch, c'est lui qui permet la recherche 
+  et l'agrégation des données dans le Dashboard.
+- **Wazuh Manager** : reçoit les événements envoyés par les agents, les 
+  compare à des règles de détection (decoders + rules) et génère les 
+  alertes lorsqu'un comportement suspect est identifié.
+- **Wazuh Dashboard** : interface web permettant de visualiser les 
+  alertes, l'état des agents et les tableaux de bord (basé sur 
+  OpenSearch Dashboards).
+- **Wazuh Agent** : programme léger installé sur chaque machine 
+  surveillée (Linux, Windows...). Il collecte les logs et événements 
+  locaux et les transmet au Manager.
+
+Dans ce lab, le Manager, l'Indexer et le Dashboard sont installés sur la 
+même VM (`wazuh-manager`, 192.168.56.10) — une architecture "all-in-one" 
+adaptée à un environnement de lab, contrairement à un vrai déploiement 
+en production où ces composants seraient généralement séparés sur 
+plusieurs serveurs pour la charge et la résilience.
+
+
+
+
 ### Adressage IP
 
 | Machine | Rôle | IP |
