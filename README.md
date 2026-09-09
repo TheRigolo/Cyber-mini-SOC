@@ -74,4 +74,4 @@ plusieurs serveurs pour la charge et la résilience.
 | OS cible Windows | Windows 11 |
 | Attaque | Kali Linux |
 | Réseau | Host-Only, 192.168.56.0/24 |
-| IDS réseau | Suricata 6.0.4 |
+| IDS réseau | Suricata 6.0.4 (dépôt Ubuntu par défaut) |
