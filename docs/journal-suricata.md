@@ -56,6 +56,9 @@ dans `/etc/suricata/rules/local.rules` :
 detecte` (rule.id 86601) ; preuve que la chaîne complète IDS (Suricata) 
 → SIEM (Wazuh) fonctionne de bout en bout.
 
+![Alerte Suricata Dashboard](Screenshots/suricata-wazuh-integration.png)
+![Alerte Suricata dans eve.json](Screenshots/suricata-alert-icmp-evejson.png)
+
 ## Ce que j'en retiens
 
 - Toujours vérifier quelle interface réseau est réellement surveillée 
