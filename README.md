@@ -60,7 +60,7 @@ plusieurs serveurs pour la charge et la résilience.
 | wazuh-manager | Manager + Indexer + Dashboard + Suricata | 192.168.56.10/24 |
 | target-linux | Agent Wazuh | 192.168.56.20/24 |
 | target-windows | Agent Wazuh | 192.168.56.30/24 |
-| attacker-kali | Machine d'attaque | 192.168.56.x/24 |
+| attacker-kali | Machine d'attaque | 192.168.56.40/24 |
 
 
 
@@ -74,3 +74,4 @@ plusieurs serveurs pour la charge et la résilience.
 | OS cible Windows | Windows 11 |
 | Attaque | Kali Linux |
 | Réseau | Host-Only, 192.168.56.0/24 |
+| IDS réseau | Suricata 6.0.4 |
