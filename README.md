@@ -75,3 +75,8 @@ plusieurs serveurs pour la charge et la résilience.
 | Attaque | Kali Linux |
 | Réseau | Host-Only, 192.168.56.0/24 |
 | IDS réseau | Suricata 6.0.4 (dépôt Ubuntu par défaut) |
+
+
+## Documentation détaillée
+- [Installation Wazuh + Agents](docs/journal-installation-agents.md)
+- [Suricata](docs/journal-suricata.md)
