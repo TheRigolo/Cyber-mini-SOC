@@ -25,7 +25,7 @@
 </rule>
 ```
 
-**Test réalisé** : Exécution de 4 tentatives consécutives de connexion SSH avec des identifiants erronés depuis la machine d'attaque Kali vers l'agent Linux, le tout en moins de 2 minutes.
+**Test réalisé** : Exécution de 4 tentatives consécutives de connexion SSH avec des identifiants erronés depuis la machine d'attaque Kali vers le wazuh-manager, le tout en moins de 2 minutes.
 
 **Résultat** :
 ![Brute_force_ssh](Screenshots/Rule_100010.png)
@@ -102,3 +102,22 @@ contenant la chaîne de caractères `/etc/shadow` définie dans notre balise `<m
 
 La capture confirme le déclenchement immédiat de l'alerte d'intégrité (ID 100013). Pour que cette alerte remonte instantanément, il a fallu configurer l'agent (`ossec.conf`) 
 en ajoutant `<directories realtime="yes" report_changes="yes">/etc/passwd</directories>` pour résoudre un conflit de configuration qui l'écrasait.
+
+
+
+
+## Ce que j'en retiens
+
+Écrire des règles de détection personnalisées demande d'abord de bien 
+identifier la règle native sur laquelle s'appuyer (`if_sid` ou 
+`if_matched_sid`), plutôt que de tout redétecter depuis zéro. La 
+difficulté n'est pas la syntaxe XML en elle-même, mais le fait de bien 
+comprendre le format exact du log brut (`full_log`) traité par Wazuh 
+avant d'écrire une condition `<match>` — une condition trop stricte 
+peut faire échouer une règle en silence, sans message d'erreur explicite 
+(comme observé sur la règle 100011).
+
+Le mapping MITRE ATT&CK (`<mitre><id>`) est simple à ajouter mais donne 
+une vraie valeur professionnelle aux règles : ça permet de justifier 
+chaque détection par rapport à une technique d'attaque connue et 
+standardisée, plutôt que d'avoir des règles isolées sans contexte.
