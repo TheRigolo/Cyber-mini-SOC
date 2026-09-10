@@ -27,7 +27,10 @@
 
 **Test réalisé** : Exécution de 4 tentatives consécutives de connexion SSH avec des identifiants erronés depuis la machine d'attaque Kali vers l'agent Linux, le tout en moins de 2 minutes.
 
-**Résultat** :Sur cette capture, on observe clairement le déclenchement de la règle personnalisée 100010 avec un niveau de sévérité critique de 10. Cela confirme que le moteur Wazuh a correctement corrélé les
+**Résultat** :
+![Brute_force_ssh](Screenshots/Rule_100010.png)
+
+Sur cette capture, on observe clairement le déclenchement de la règle personnalisée 100010 avec un niveau de sévérité critique de 10. Cela confirme que le moteur Wazuh a correctement corrélé les
 multiples événements d'échec (règle parente 5760) grâce aux attributs `frequency="4"` et `timeframe="120"` que nous avons intégrés à la balise principale.
 
 
@@ -46,7 +49,10 @@ multiples événements d'échec (règle parente 5760) grâce aux attributs `freq
 
 **Test réalisé** : Exécution de la commande `sudo useradd testuser` directement sur le terminal de l'agent Linux.
 
-**Résultat** : La capture montre que l'action a bien été interceptée et catégorisée sous notre ID 100011 (niveau 12), écrasant la règle par défaut de niveau 8. Pour obtenir ce résultat, 
+**Résultat** :
+![Creation_utilisateur](Screenshots/Rule_100011.png)
+
+La capture montre que l'action a bien été interceptée et catégorisée sous notre ID 100011 (niveau 12), écrasant la règle par défaut de niveau 8. Pour obtenir ce résultat, 
 un ajustement a été nécessaire : la condition `<match>useradd|adduser</match>`a été supprimée car elle était trop stricte par rapport au log brut (full_log) envoyé par le système.
 
 
@@ -67,7 +73,10 @@ un ajustement a été nécessaire : la condition `<match>useradd|adduser</match>
 
 **Test réalisé** : Exécution de la commande `sudo cat /etc/shadow` sur l'agent Linux.
 
-**Résultat** : Comme illustré, la règle 100012 de niveau 9 est remontée instantanément. L'analyseur de logs a parfaitement détecté en temps réel l'utilisation de la commande sudo (déclenchant la règle 5402) 
+**Résultat** : 
+![Acces_doc_sudo](Screenshots/Rule_100012.png)
+
+Comme illustré, la règle 100012 de niveau 9 est remontée instantanément. L'analyseur de logs a parfaitement détecté en temps réel l'utilisation de la commande sudo (déclenchant la règle 5402) 
 contenant la chaîne de caractères `/etc/shadow` définie dans notre balise `<match>`.
 
 
@@ -88,5 +97,8 @@ contenant la chaîne de caractères `/etc/shadow` définie dans notre balise `<m
 
 **Test réalisé** : Ajout d'une ligne de commentaire factice à la fin du fichier `/etc/passwd` en utilisant l'éditeur `nano` sur l'agent Linux.
 
-**Résultat** : La capture confirme le déclenchement immédiat de l'alerte d'intégrité (ID 100013). Pour que cette alerte remonte instantanément, il a fallu configurer l'agent (`ossec.conf`) 
+**Résultat** :
+![Modif_fichier_critique](Screenshots/Rules_100013.png)
+
+La capture confirme le déclenchement immédiat de l'alerte d'intégrité (ID 100013). Pour que cette alerte remonte instantanément, il a fallu configurer l'agent (`ossec.conf`) 
 en ajoutant `<directories realtime="yes" report_changes="yes">/etc/passwd</directories>` pour résoudre un conflit de configuration qui l'écrasait.
