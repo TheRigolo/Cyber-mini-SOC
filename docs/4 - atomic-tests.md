@@ -82,6 +82,10 @@ vers `linux-agent-01` en moins de 2 minutes.
 **Hypothèse** : l'exécution de Mimikatz devrait permettre le dump des 
 identifiants en mémoire (LSASS), potentiellement détecté par Wazuh.
 
+**Vérification des prérequis** :
+```powershell
+Invoke-AtomicTest T1059.001 -TestNumbers X -GetPrereqs
+```
 **Commande exécutée** :
 ```powershell
 Invoke-AtomicTest T1059.001 -TestNumbers 1
