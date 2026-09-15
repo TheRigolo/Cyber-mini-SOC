@@ -34,7 +34,7 @@ normalement comme suspects.
    (Tamper Protection) et de la protection en temps réel
 3. Réinstallation forcée : `Install-AtomicRedTeam -getAtomics -Force`
 
-![atomic-defender-block-notification](/Screenshots/atomic-defender-block-notification.png)
+![atomic-defender-block-notification](Screenshots/atomic-defender-block-notification.png)
 
 **Ce que j'en retiens** : un antivirus bloque ce type d'outil par design, 
 avant même qu'un SIEM n'ait à intervenir ; c'est un premier niveau de 
@@ -72,7 +72,7 @@ vers `linux-agent-01` en moins de 2 minutes.
 **Résultat** : alerte déclenchée par la règle custom **100010** 
 (niveau 10), basée sur la règle native 5760, avec mapping MITRE T1110.
 
-![rule 100010](/Screenshots/rule100010.png)
+![rule_100010](Screenshots/Rule_100010.png)
 
 
 ---
@@ -229,9 +229,12 @@ un bon signe de robustesse.
 
 ![atomic-t1059001-15-execution](Screenshots/atomic-t1059001-15-execution.png)
 
+![atomic-t1059001-15-16-wazuh-alerts](Screenshots/atomic-t1059001-15-16-wazuh-alerts(3).png)
+![atomic-t1059001-15-16-wazuh-alerts](Screenshots/atomic-t1059001-15-16-wazuh-alerts(2).png)
 ![atomic-t1059001-15-16-wazuh-alerts](Screenshots/atomic-t1059001-15-16-wazuh-alerts.png)
 
-![atomic-t1059001-16-execution](Screenshots/atomic-t1059001-16-execution)
+
+![atomic-t1059001-16-execution](Screenshots/atomic-t1059001-16-execution.png)
 
 ---
 
