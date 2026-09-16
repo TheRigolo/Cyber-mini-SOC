@@ -1,4 +1,4 @@
-# Règles de détection personnalisées — Partie 6
+# Règles de détection personnalisées 
 
 ## Tableau de couverture MITRE ATT&CK
 
