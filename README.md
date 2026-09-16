@@ -78,8 +78,8 @@ plusieurs serveurs pour la charge et la résilience.
 
 
 ## Documentation détaillée
-- [Installation Wazuh + Agents](docs/journal-installation-agents.md)
-- [Suricata](docs/journal-suricata.md)
-- [Règles de détection personnalisées](docs/regles-detection.md)
-- [Simulation d'attaques — Atomic Red Team](docs/atomic-tests.md)
-- [Rapport d'incident](docs/rapport-incident.md)
+- [Installation Wazuh + Agents](docs/1-journal-installation-agents.md)
+- [Suricata](docs/2-journal-suricata.md)
+- [Règles de détection personnalisées](docs/3-regles-detection.md)
+- [Simulation d'attaques — Atomic Red Team](docs/4-atomic-tests.md)
+- [Rapport d'incident](docs/5-rapport-incident.md)
