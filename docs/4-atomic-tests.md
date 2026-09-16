@@ -60,7 +60,7 @@ défense à documenter en soi.
 
 ### 1. T1110 — Brute Force SSH (Credential Access)
 
-*(Réutilisation du travail des parties 4 et 6 ; technique déjà simulée 
+*(Réutilisation du travail des parties précédentes ; technique déjà simulée 
 et détectée avant l'introduction d'Atomic Red Team)*
 
 **Hypothèse** : plusieurs échecs d'authentification SSH rapprochés 
