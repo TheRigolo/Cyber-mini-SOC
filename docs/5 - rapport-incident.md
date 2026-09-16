@@ -1,7 +1,7 @@
 # Rapport d'incident — Simulation d'intrusion
 
 **Auteur** : Analyste SOC
-**Date du rapport** : 15 septembre 2026
+**Date du rapport** : 16 septembre 2026
 **Périmètre** : Infrastructure de lab SOC (réseau isolé 192.168.56.0/24)
 
 > **Note méthodologique** : ce rapport reconstitue, sous forme d'un 
@@ -15,7 +15,7 @@
 
 ## 1. Résumé exécutif
 
-Le 15 septembre 2026, une activité suspecte a été détectée sur 
+Le 16 septembre 2026, une activité suspecte a été détectée sur 
 l'infrastructure surveillée. L'incident a débuté par une tentative 
 d'accès par force brute sur le service SSH du serveur Linux 
 (`linux-agent-01`), suivie, une dizaine de minutes plus tard, de 
@@ -38,8 +38,6 @@ constaté à l'issue de l'incident.
 | 14:15:48 | Détection d'appel suspect à l'API `CreateThread` | `windows-agent-02` | ✅ Alerte Wazuh (règle 91810, niveau 10) |
 | 14:23:05 | Tentative d'exécution de Mimikatz et de dump de credentials LSASS | `windows-agent-02` | ❌ Non détectée par Wazuh — accès refusé par le système (voir §6) |
 
-> Les horodatages précis de chaque test individuel figurent dans le 
-> détail des parties 6 et 7 du projet.
 
 ---
 
@@ -78,7 +76,7 @@ attributs `frequency="4"` et `timeframe="120"`.
 
 
 
-![Alerte brute force SSH](/Screenshots/Rule_100010.png)
+![Alerte brute force SSH](Screenshots/Rule_100010.png)
 
 
 ### 5.2 Exécution PowerShell obfusquée (règles 91809/91810 et associées)
@@ -95,8 +93,9 @@ de la technique (`-EncodedCommand` et `-EncodedArguments`), ce qui
 démontre la robustesse de la détection face à de légères variations de 
 syntaxe.
 
-*(Capture à insérer : alertes multiples dans le Dashboard, réalisée en 
-partie 7, tests 15/16)*
+![Alertes PowerShell encodé](Screenshots/atomic-t1059001-15-16-wazuh-alerts(3).png)
+
+![Alertes PowerShell encodé](Screenshots/atomic-t1059001-15-16-wazuh-alerts(2).png)
 
 ![Alertes PowerShell encodé](Screenshots/atomic-t1059001-15-16-wazuh-alerts.png)
 
@@ -108,16 +107,15 @@ avec succès), mais la commande `sekurlsa::logonpasswords` a échoué avec
 le code d'erreur `0x00000005` (Accès refusé), empêchant tout accès 
 réel aux identifiants stockés en mémoire par le processus LSASS.
 
-*(Capture à insérer : terminal montrant l'erreur, réalisée en partie 7, 
-test 1)*
 
-![Échec Mimikatz](/Screenshots/atomic-t1059001-1-mimikatz-execution.png)
+
+![Échec Mimikatz](Screenshots/atomic-t1059001-1-mimikatz-execution.png)
 
 
 **Point d'attention** : cette tentative n'a généré **aucune alerte 
 Wazuh** correspondante, malgré la vérification de la configuration de 
 collecte (canal Defender Operational). Ceci constitue une limite de 
-détection identifiée sur ce périmètre (voir Recommandations, §7).
+détection identifiée sur ce périmètre.
 
 ---
 
@@ -144,15 +142,14 @@ compromission effective, malgré une détection partielle côté SIEM.
 
 2. **Étendre la collecte de logs Windows** : le canal 
    `Microsoft-Windows-PowerShell/Operational` s'est révélé insuffisant 
-   seul pour détecter certaines exécutions PowerShell (cf. test 
-   fileless, partie 7) ; envisager la collecte complémentaire du canal 
+   seul pour détecter certaines exécutions PowerShell ; envisager la collecte complémentaire du canal 
    Security avec les Event ID de création de processus (4688) incluant 
    la ligne de commande complète.
 
 3. **Investiguer l'absence de détection sur la tentative Mimikatz** : 
    bien que bloquée par le système, cette tentative aurait dû générer 
    une trace exploitable (Event ID lié à l'accès refusé sur LSASS, 
-   type 4656/4663 du canal Security) — la collecte actuelle ne couvre 
+   type 4656/4663 du canal Security) ; la collecte actuelle ne couvre 
    pas ce cas.
 
 4. **Maintenir active la LSA Protection** sur l'ensemble des postes 
@@ -171,8 +168,8 @@ Cet incident simulé illustre une chaîne d'attaque multi-vecteurs
 (accès initial par force brute, exécution de code obfusqué, tentative 
 d'extraction de credentials), avec des résultats de détection 
 contrastés : une détection solide et reproductible sur les techniques 
-d'accès (T1110) et d'exécution (T1059.001), mais une lacune identifiée 
+d'accès et d'exécution (T1059.001), mais une lacune identifiée 
 sur la détection des tentatives de dump de credentials bloquées par le 
-système (T1003.001). Cette analyse constitue une base concrète pour 
+système. Cette analyse constitue une base concrète pour 
 prioriser les prochaines améliorations de détection de 
 l'infrastructure.
